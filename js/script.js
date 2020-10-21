@@ -99,7 +99,7 @@ function addPagination(page, maxPerPage, data) {
       studentsPage.appendChild(LI);
    }
 }
-s
+
 
 // keyup event on the go
 function addSearchBar() {
