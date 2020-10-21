@@ -1,5 +1,3 @@
-<img src="img/icn-search.svg" align="right" />
-
 # Awesome README ![Together We Can Overcome](https://user-images.githubusercontent.com/64751892/96665128-d135b480-1319-11eb-962e-a5a96c66f19e.png)
 
 # Data Pagination and Filtering
