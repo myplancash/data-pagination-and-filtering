@@ -1,6 +1,4 @@
-# Awesome README ![Together We Can Overcome](https://user-images.githubusercontent.com/64751892/96665128-d135b480-1319-11eb-962e-a5a96c66f19e.png)
-
-# Data Pagination and Filtering
+# Data Pagination and Filtering ![Together We Can Overcome](https://user-images.githubusercontent.com/64751892/96665128-d135b480-1319-11eb-962e-a5a96c66f19e.png)
 
 > In this project, you'll use a common web development technique known as “pagination” to enhance the usability of a web page.
 
