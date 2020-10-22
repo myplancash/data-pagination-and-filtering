@@ -39,7 +39,7 @@ function showPage(page, data) {
    studentList.innerHTML = "";
 
    //Loop over the list parameter, that needs first parameter to display a section of student items.
-   for (let i = 0; i < list.length; i++) {
+   for (let i = 0; i < data.length; i++) {
       student = data[i];
       // filters the exact positions from the database
       if (i >= starIndex && i <= endIndex) {
@@ -61,6 +61,7 @@ function showPage(page, data) {
                 <span class="date">Joined ${student.registered.date}</span>
             </div>
             `
+         // add the prevously created html student template to studentList
          studentList.appendChild(studentItem);
       }
    }
@@ -101,79 +102,76 @@ function addPagination(page, maxPerPage, data) {
 }
 
 
-// keyup event on the go
 function addSearchBar() {
+   // using template literal to replicate the HTML search bar
+   const searchBar = `
+      <label for="search" class="student-search">
+         <input id="search" placeholder="Search by name..." autocomplete="off">
+         <button type="button"><img src="img/icn-search.svg" class= "submit" alt="Search icon"></button>
+      </label>`;
+      // insert the search bar inside the header after last child
+      header.insertAdjacentHTML('beforeend', searchBar);
+}
 
-//Dynamically create and add a search bar. Avoid making any changes in the index.html file
-const label = document.createElement("LABEL");
-label.classList.add("student-search");
-label.setAttribute("for", "search");
-header.appendChild(label);
+function addSearchFilter(data) {
+   // assigning the input element with id of 'search' to variable 'search'
+   const inputSearch = document.querySelector("#search");
+   // assigning the button element to the variable 'submit'
+   const buttonSearch = document.querySelector(".student-search button");
 
-const input = document.createElement("INPUT");
-input.setAttribute("id", "search");
-// Create a "placeholder" attribute
-let att = document.createAttribute("placeholder");
-// Set the value of the placeholder attribute
-att.value = "Search by name...";
-input.setAttributeNode(att);
-
-label.appendChild(input);
-
-const button = document.createElement("BUTTON");
-button.type = "button";
-button.classList.add("search-button");
-
-const img = document.createElement("IMG");
-img.setAttribute("src", "img/icn-search.svg");
-img.setAttribute("alt", "Search icon");
-button.appendChild(img);
-
-label.appendChild(button);
-
-   input.addEventListener("keyup", event => {
+   // create a input keyup event
+   inputSearch.addEventListener("keyup", event => {
       const inputTargetValue = event.target.value.toLowerCase();
       const newStudentList = [];
 
-      for (let i = 0; i < data.length; i++) {
-         const studentName = `${data[i].name.title.toLowerCase()} ${data[i].name.first.toLowerCase()} ${data[i].name.last.toLowerCase()}`;
 
+      for (let i = 0; i < data.length; i++) {
+      const newStudent = data[i]
+      const studentName = `${newStudent.name.title.toLowerCase()} ${newStudent.name.first.toLowerCase()} ${newStudent.name.last.toLowerCase()}`;
+         //// Checking if each student's Title, first and last name (studentName) match with the value user is typing (inputTargetValue)
          if(studentName.includes(inputTargetValue)) {
+            // pushing the each one of the data into the already created empty array
             newStudentList.push(data[i]);
+            // showing the newly unpdated array of students matched
             showPage(page, newStudentList);
-            addPagination(newStudentList);
          }
       }
+      // showing the inicial student list if there is no match
+      if (newStudentList === 0) {
+         showPage(page, data);
+         addPagination(page, maxPerPage, data);
+      }
+   })
 
+
+   // create a button click event
+   buttonSearch.addEventListener("click", () => {
+      //capture input value
+      const inputValue = inputSearch.value.toLowerCase();
+      // create an empty array to pushing then
+      const newStudentList = [];
+
+
+      //looping through initial data array
+      for (let i = 0; i < data.length; i++) {
+         const newStudent = data[i]
+         const studentName = `${newStudent.name.title.toLowerCase()} ${newStudent.name.first.toLowerCase()} ${newStudent.name.last.toLowerCase()}`;
+
+         // Checking if each student's Title, first and last name (studentName) match with the value user searched (inputValue)
+         if(studentName.includes(inputValue)) {
+            // pushing the each one of the data into the already created empty array
+            newStudentList.push(data[i]);
+            // showing the newly unpdated array of students matched
+            showPage(page, newStudentList);
+         }
+      }
+      // If no results are found, then display message
       if (newStudentList.length === 0) {
-         error(inputTargetValue);
-         addPagination(newStudentList);
+         error(inputValue);
       }
 
    })
-
-   // Add Functionality to the Search Component
-   button.addEventListener("click", () => {
-      const inputValue = input.value.toLowerCase();
-      const newStudentList = [];
-
-      for (let i = 0; i < data.length; i++) {
-         const studentName = `${data[i].name.title.toLowerCase()} ${data[i].name.first.toLowerCase()} ${data[i].name.last.toLowerCase()}`;
-
-         if(studentName.includes(inputValue)) {
-            newStudentList.push(data[i]);
-            showPage(page, newStudentList);
-            addPagination(newStudentList);
-         }
-      }
-
-      if (newStudentList.length === 0) {
-         error(inputValue);
-         addPagination(newStudentList)
-      }
-   });
 }
-
 
 // display error
 function error(input) {
@@ -189,4 +187,7 @@ function error(input) {
 showPage(page, data);
 //Call the second function to add pagination buttons, passing the data variable as an argument.
 addPagination(page, maxPerPage, data);
+// Call the third function which insert the search bar dinamically
 addSearchBar();
+// Call fourth function passing data, adds functionality to the search bar
+addSearchFilter(data);
