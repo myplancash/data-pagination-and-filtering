@@ -18,6 +18,7 @@ const showPage = (list, page) => {
    const starIndex = (page * 9) - 9;
    const endIndex = (page * 9);
 
+
    // to remove any students that might have previously been displayed.
    studentList.innerHTML = "";
 
@@ -55,6 +56,7 @@ const addPagination = (list) => {
    //Create a variable to store the value of the number of pagination buttons needed.
    //You can calculate this using the length of the list parameter.
    const maxPage = Math.ceil(list.length / 9);
+
    //to remove any pagination buttons that might have previously been displayed.
    studentsPage.innerHTML = "";
 
@@ -136,7 +138,6 @@ const error = (input) => {
 
 
 inputSearch.addEventListener('keyup', (e) => {
-   // filterData(e.target.value)
    const textInput = e.target.value.toLowerCase().trim();
    const newStudentsList = [];
 
@@ -152,13 +153,6 @@ inputSearch.addEventListener('keyup', (e) => {
 
    }
 
-   /*  if(studentFilter.length > 0) {
-      showPage(page, studentFilter);
-      addPagination(page, maxPerPage, studentFilter);
-   } else {
-      studentList.innerHTML = '';
-      studentsPage.innerHTML = '';
-   } */
    if (newStudentsList.length === 0) {
       error(textInput);
    }
